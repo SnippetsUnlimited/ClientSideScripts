@@ -19,6 +19,8 @@
         }
     }, options);
 
+    this.tag = null;
+
     //Properties 
     var _Data = [];
     var _SelectedIndex = -1;
@@ -30,7 +32,8 @@
         return _Settings;
     }
 
-    this.getUIRoot = function () {
+    this.getUIRoot = function ()
+    {
         return _UIRoot;
     }
 
@@ -60,7 +63,8 @@
     //Public - Creates list items by removing previous.
     this.setData = function (data) {
         this.clear();
-        if (data && data.length > 0) {
+        if(data && data.length > 0)
+        {
             _Data = data;
             initialRender(this);
             this.setSelected(_Settings.defaultIndex);
@@ -86,7 +90,7 @@
             });
             _SelectedIndex = index;
             if ($settings.events.OnSelectionChanged != null) {
-                $settings.events.OnSelectionChanged.apply(this);
+                $settings.events.OnSelectionChanged.call(this);
             }
         }
     }
@@ -99,7 +103,7 @@
         }
         else if (!visible && _IsVisible) {
             _DisplayType = _UIRoot.css("display");
-            _UIRoot.css("display", "none");
+            _UIRoot.css("display","none");
             _IsVisible = false;
         }
     }
@@ -110,12 +114,12 @@
     }
 
     //Private Event - raised when a list item is clicked
-    var onClick = function (args) {
-        var $listitem = $(args.target);
+    var onClicked = function (e) {
+        var $listitem = $(e.target);
         var $settings = _Settings;
         this.setSelected(parseInt($listitem.data($settings.itemdataattribute), 10));
         if ($settings.events.onClicked != null) {
-            $settings.events.onClicked.apply(this);
+            $settings.events.onClicked.call(this, e);
         }
     }
 
@@ -154,7 +158,7 @@
         }
     };
 
-    // binds all list items to onClick event in one go.
+    // binds all list items to onClicked event in one go.
     // If we change the ui element from List to something else we need to handle the event binding below.
-    _UIRoot.on('click', 'li', contextBinder(onClick, this));
+    _UIRoot.on('click', 'li', contextBinder(onClicked, this));
 }

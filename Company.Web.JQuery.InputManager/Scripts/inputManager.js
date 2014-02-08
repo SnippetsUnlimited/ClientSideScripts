@@ -18,6 +18,8 @@
         },
     }, options);
 
+    this.tag = null;
+
     var _Target = $(target);
     var _UIRoot = _Target.wrap($(_Settings.divTemplate)).parent();
 
@@ -48,7 +50,7 @@
                 cursorPosition: position
             });
 
-            (contextBinder(_Settings.events.onKeyup, this))(param);
+            _Settings.events.onKeyup.call(this, param);
         }
 
     }
@@ -68,7 +70,7 @@
                 cursorPosition: position
             });
 
-            (contextBinder(_Settings.events.onKeydown, this))(param);
+            _Settings.events.onKeydown.call(this, param);
         }
     }
 
