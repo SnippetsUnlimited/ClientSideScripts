@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <script type="text/javascript" src="scripts/hashtable.js"></script>
+</head>
+<body>
+<pre>
+<script>
+var h = new HashTable();
+
+document.writeln("hastable instance created ...");
+h.add("name", "ayyaz");
+document.writeln("key 'name' added ...");
+document.writeln("h.keys.length = " + h.getKeys().length);
+h.add("name2", "ayyaz");
+document.writeln("key 'name2' added ...");
+h.add("name3", "ayyaz");
+document.writeln("key 'name3' added ...");
+h.add("name4", "ayyaz");
+document.writeln("key 'name4' added ...");
+document.writeln("h.keys.length = " + h.getKeys().length);
+h.remove("name");
+document.writeln("key 'name' removed ...");
+h.remove("name2");
+document.writeln("key 'name2' removed ...");
+h.remove("name3");
+document.writeln("key 'name3' removed ...");
+document.writeln("key 'name4' : " + h.get("name4"));
+document.writeln("count: " + h.count());
+
+</script>
+</pre>
+</body>
+</html>
