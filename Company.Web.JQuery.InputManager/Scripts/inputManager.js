@@ -11,6 +11,7 @@
 
     // save settings
     var _Settings = $.extend({}, {
+        containerClass: "inputmanager-main",
         divTemplate: "<div style='position: relative; display:inline-block;'></div>",
         events: {
             onKeyup: null,
@@ -21,7 +22,7 @@
     this.tag = null;
 
     var _Target = $(target);
-    var _UIRoot = _Target.wrap($(_Settings.divTemplate)).parent();
+    var _UIRoot = _Target.wrap($(_Settings.divTemplate)).parent().addClass(_Settings.containerClass);
 
     this.getTarget = function () {
         return _Target;
@@ -127,17 +128,14 @@
 
         //create div as a copy and get cursor position.
         var $div = $("<div></div>").css(css).append(preText).appendTo(document.body);
-        var $cursor = $("<span></span>").text(String.fromCharCode(".")).appendTo($div);
+        var $cursor = $("<span style='display:inline-block;'>.</span>").appendTo($div);
         var pos = $cursor.position();
-
         if ($this.css("direction") === "rtl") {
             pos.right = $div.width() - pos.left;
             delete pos.left;
         }
-
         pos.top += $cursor.height() - $this.scrollTop();
         $div.remove();
-
         return pos;
     };
 

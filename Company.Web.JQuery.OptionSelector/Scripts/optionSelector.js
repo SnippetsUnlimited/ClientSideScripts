@@ -32,8 +32,7 @@
         return _Settings;
     }
 
-    this.getUIRoot = function ()
-    {
+    this.getUIRoot = function () {
         return _UIRoot;
     }
 
@@ -63,8 +62,7 @@
     //Public - Creates list items by removing previous.
     this.setData = function (data) {
         this.clear();
-        if(data && data.length > 0)
-        {
+        if (data && data.length > 0) {
             _Data = data;
             initialRender(this);
             this.setSelected(_Settings.defaultIndex);
@@ -103,7 +101,7 @@
         }
         else if (!visible && _IsVisible) {
             _DisplayType = _UIRoot.css("display");
-            _UIRoot.css("display","none");
+            _UIRoot.css("display", "none");
             _IsVisible = false;
         }
     }
