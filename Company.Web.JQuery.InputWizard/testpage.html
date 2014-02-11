@@ -1,0 +1,112 @@
+﻿<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="default.css" />
+    <script type="text/javascript" src="scripts/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="scripts/optionSelector.js"></script>
+    <script type="text/javascript" src="scripts/inputManager.js"></script>
+    <script type="text/javascript" src="scripts/inputWizard.js"></script>
+    <style>
+        /* for default class */
+        .selectorlist-item
+        {
+            cursor: pointer;
+            font-family: Verdana;
+            font-size: 12px;
+            color: #222222;
+            padding: 5px 5px 5px 20px;
+            background-color: #ffffff;
+        }
+
+        /* for text2 */
+        .selectorlist-item-rtl {
+            direction: rtl;
+            cursor: pointer;
+            font-family: Verdana;
+            font-size: 12px;
+            color: #222222;
+            padding: 5px 20px 5px 5px;
+            background-color: #ffffff;
+        }
+
+        .selectorlist-selecteditem {
+            background-image: linear-gradient(to bottom, #5588CC, #5577B3);
+            color: #ffffff !important;
+        }
+
+        /* for default class */
+        .selectorlist
+        {
+            position: absolute;
+            width: 100px;
+            border: 1px solid #aaaaaa;
+        }
+    </style>
+</head>
+<body>
+
+    <textarea class="textboxes" id="text1" style="direction:ltr; width: 600px; height: 200px;"></textarea>
+    <br /><br /><br /><br />
+    <textarea class="textboxes" id="text2" style="direction:rtl; width: 600px; height: 200px;"></textarea>
+
+</body>
+        <script type="text/javascript">
+            $(document).ready(function () {
+
+                $("#text1").inputWizard({
+                    fullTextMatching: false,
+                    triggers: [
+                        {
+                            name: "dictionary",
+                            match: /\w+$/,
+                            search: function (term) {
+                                var itemlist = ['apple', 'ape', 'applepie', 'america', 'amount'];
+                                return $.map(itemlist, function (item) {
+                                    return item.indexOf(term) === 0 ? item : null;
+                                });
+                            },
+                            replace: function (term) {
+                                return term; //["<" + term + ">", "</" + term + ">"];
+                            }
+                        }
+                    ],
+                    events: {
+                        onDataLoad: function (data) {
+                            if (data && data.length > 0) {
+                                return true;
+                            }
+                            return false;
+                        }
+                    },
+                });
+
+                $("#text2").inputWizard({
+                    fullTextMatching: false,
+                    triggers: [
+                        {
+                            name: "dictionary",
+                            match: /\S+$/,
+                            search: function (term) {
+                                var itemlist = ['اپنا', 'انا', 'اگر', 'امریکہ', 'افسوس'];
+                                return $.map(itemlist, function (item) {
+                                    return item.indexOf(term) === 0 ? item : null;
+                                });
+                            },
+                            replace: function (term) {
+                                return term; //["<" + term + ">", "</" + term + ">"];
+                            }
+                        }
+                    ],
+                    events: {
+                        onDataLoad: function (data) {
+                            if (data && data.length > 0) {
+                                return true;
+                            }
+                            return false;
+                        }
+                    },
+                });
+
+            });
+    </script>
+</html>
