@@ -1,0 +1,126 @@
+﻿<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="default.css" />
+    <script type="text/javascript" src="scripts/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="scripts/optionSelectorEx.js"></script>
+    <style>
+        /* for default class */
+        .selectorlist-item
+        {
+            cursor: pointer;
+            font-family: Verdana;
+            font-size: 12px;
+            color: #222222;
+            padding: 5px 5px 5px 20px;
+            background-color: #ffffff;
+        }
+
+        /* for text2 */
+        .selectorlist-item-rtl
+        {
+            direction: rtl;
+            cursor: pointer;
+            font-family: Verdana;
+            font-size: 12px;
+            color: #222222;
+            padding: 5px 20px 5px 5px;
+            background-color: #ffffff;
+        }
+
+        .selectorlist-selecteditem
+        {
+            background-image: linear-gradient(to bottom, #5588CC, #5577B3);
+            color: #ffffff !important;
+        }
+
+        /* for default class */
+        .selectorlist
+        {
+            border: 1px solid #aaaaaa;
+            width: 100px;
+        }
+
+        .mainselectorlist
+        {
+            position: absolute;
+            border: 1px solid #aaaaaa;
+            white-space: nowrap;
+        }
+
+        .mainselectorlist-item
+        {
+            display: inline-block;
+            vertical-align: top;
+            padding: 1px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="div1" style="display: inline-block; position: relative;">
+        <textarea id="text1" style="direction: ltr;"></textarea>
+    </div>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <div id="div2" style="display: inline-block; position: relative;">
+        <textarea id="text2" style="direction: rtl;"></textarea>
+    </div>
+
+</body>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        var s1 = new optionSelectorEx({
+            defaultList: 1,
+            assistiveNavigation: true,
+            rememberSelection: true,
+            events: {
+                onClicked: function (e) {
+                    $("#text1").val(this.getSelected()).focus();
+                }
+            }
+        });
+
+        $("#div1").append(s1.getUIRoot());
+
+        $("#text1").on("keydown", function (e) {
+            if (e.keyCode == 38) { //up
+                e.preventDefault();
+                s1.setSelected(s1.getSelectedIndex() - 1);
+            }
+            else if (e.keyCode == 40) { //down
+                e.preventDefault();
+                s1.setSelected(s1.getSelectedIndex() + 1);
+            }
+            else if (e.keyCode == 37) { //left
+                e.preventDefault();
+                s1.setSelected(s1.getSelectedIndex(), s1.getActiveListIndex() - 1);
+            }
+            else if (e.keyCode == 39) { //right
+                e.preventDefault();
+                s1.setSelected(s1.getSelectedIndex(), s1.getActiveListIndex() + 1);
+            }
+            else if (e.keyCode == 13) {
+                e.preventDefault();
+                $("#text1").val(s1.getSelected())
+            }
+        });
+
+        s1.setData([
+            ['A', 'B', 'C', 'D', 'E'],
+            ['F', 'G'],
+            ['H', 'I', 'J', 'K', 'L']
+        ]);
+
+
+    });
+</script>
+</html>
