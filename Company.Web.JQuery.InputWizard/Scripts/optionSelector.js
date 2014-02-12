@@ -10,7 +10,7 @@
         listClass: "selectorlist",
         itemClass: "selectorlist-item",
         selectedItemClass: "selectorlist-selecteditem",
-        rootTemplate: "<ul style='padding: 0; margin: 0; list-style-type: none; z-index: 999999;'></ul>",
+        listTemplate: "<ul style='padding: 0; margin: 0; list-style-type: none; z-index: 999999;'></ul>",
         itemTemplate: "<li></li>",
         itemdataattribute: "index",
         events: {
@@ -22,10 +22,10 @@
     this.tag = null;
 
     //Properties 
-    var _Data = [];
-    var _SelectedIndex = -1;
     var _IsVisible = true;
-    var _UIRoot = $(_Settings.rootTemplate).addClass(_Settings.listClass);
+    var _Data = null;
+    var _SelectedIndex = -1;
+    var _UIRoot = $(_Settings.listTemplate).addClass(_Settings.listClass);
     var _DisplayType = _UIRoot.css("display");
 
     this.getSettings = function () {
@@ -54,7 +54,7 @@
 
     //Public - Clears the list items.
     this.clear = function () {
-        _Data = [];
+        _Data = null;
         _UIRoot.empty();
         _SelectedIndex = -1;
     }
@@ -71,7 +71,7 @@
 
     //public - return selected data item.
     this.getSelected = function () {
-        if (_SelectedIndex > -1) {
+        if (_Data && _SelectedIndex > -1) {
             return _Data[_SelectedIndex];
         }
         return null;
@@ -79,8 +79,8 @@
 
     //Public - sets selected list item.
     this.setSelected = function (index) {
-        var $children = _UIRoot.children();
         var $settings = _Settings;
+        var $children = _UIRoot.children();
 
         if (index > -1 && index < $children.length) {
             $children.each(function (i, item) {
@@ -127,12 +127,15 @@
     var initialRender = function ($this) {
         var $settings = $this.getSettings();
         var $root = $this.getUIRoot();
+        var data = $this.getData();
         $root.empty();
-        $.each($this.getData(), function (i, item) {
-            var listItem = $($settings.itemTemplate).attr('data-' + $settings.itemdataattribute, i).addClass($settings.itemClass).append(item);
-            decorateItem($settings.selectedItemClass, listItem, $this.getSelectedIndex(), i);
-            $root.append(listItem);
-        });
+        if (data) {
+            $.each(data, function (i, item) {
+                var listItem = $($settings.itemTemplate).attr('data-' + $settings.itemdataattribute, i).addClass($settings.itemClass).append(item);
+                decorateItem($settings.selectedItemClass, listItem, $this.getSelectedIndex(), i);
+                $root.append(listItem);
+            });
+        }
     }
 
     //Private Static - decorates item by adding/removing css classes

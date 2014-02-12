@@ -103,17 +103,12 @@
                     if (forcePopup || (preText && preLength > 0 && _CachedText != preText)) {
                         _CachedText = preText;
 
-                        console.log(keyCode);
-
                         // force popup anyways or else check if there was a ligitimate printable key was pressed.
                         if (!forcePopup) {
                             if (!$selector.getVisibility() && !(isPrintable(keyCode) || keyCode > 255)) {
                                 return;
                             }
                         }
-
-                        console.log(e.preText);
-
 
                         // dataset represents a set trigger, term and results.
                         var dataset = null;
