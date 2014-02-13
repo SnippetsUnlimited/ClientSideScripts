@@ -1,4 +1,11 @@
-﻿// This code is provided in raw form.
+﻿//*********************************************************************************************
+// This code cannot be used without explicit permission.
+// Illegal use of this code may result in penal penalties.
+// For permissions and licencing please contact:
+// contib2012[ignore][at][ignore]gmail[ignore][dot][ignore]com[ignore]
+//*********************************************************************************************
+
+// This code is provided in raw form.
 // It should be modified according to javascript specification at any time.
 ; function optionSelectorEx(options) {
 
@@ -8,25 +15,9 @@
 
     //Settings
     var _Settings = $.extend({}, {
-        lists: [
-            {
-                listClass: "selectorlist",
-                itemClass: "selectorlist-item",
-                selectedItemClass: "selectorlist-selecteditem",
-            },
-            {
-                listClass: "selectorlist",
-                itemClass: "selectorlist-item",
-                selectedItemClass: "selectorlist-selecteditem",
-            },
-            {
-                listClass: "selectorlist",
-                itemClass: "selectorlist-item",
-                selectedItemClass: "selectorlist-selecteditem",
-            }
-        ],
-        defaultList: 1,
-        defaultIndex: 0,
+        lists: [],
+        defaultListIndex: 0,
+        defaultIndex: -1,
         rootListClass: "mainselectorlist",
         rootListItemClass: "mainselectorlist-item",
         listTemplate: "<ul style='padding: 0; margin: 0; list-style-type: none; z-index: 999999;'></ul>",
@@ -38,6 +29,10 @@
         }
     }, options);
 
+    if (_Settings.length == 0) {
+        throw "There must be atleast one list defined in options.";
+    }
+
     this.tag = null;
 
     //Properties 
@@ -48,7 +43,7 @@
     var _DisplayType = _UIRoot.css("display");
     var _UILists = [];
 
-   $.each(_Settings.lists, function (index, listInfo) {
+    $.each(_Settings.lists, function (index, listInfo) {
         _SelectedIndexes[index] = -1;
         var $list = $(_Settings.listTemplate).addClass(listInfo.listClass);
         var $rootItem = $(_Settings.itemTemplate).addClass(_Settings.rootListItemClass).append($list);
@@ -56,7 +51,7 @@
         _UILists.push($list);
     });
 
-    var _ActiveListIndex = _Settings.defaultList;
+    var _ActiveListIndex = (_Settings.defaultListIndex > -1) ? _Settings.defaultListIndex : 0;
 
     this.getSettings = function () {
         return _Settings;
@@ -65,8 +60,8 @@
     this.getUIRoot = function () {
         return _UIRoot;
     }
-    
-     this.getUILists = function () {
+
+    this.getUILists = function () {
         return _UILists;
     }
 
@@ -78,8 +73,18 @@
         return _SelectedIndexes[_ActiveListIndex];
     }
 
-    this.getActiveListIndex = function () {
+    this.getSelectedListIndex = function () {
         return _ActiveListIndex;
+    }
+
+    this.getListCount = function () {
+        return _UILists.length;
+    }
+
+    this.getListItemCount = function (index) {
+        if (_UILists[index]) {
+            return _UILists[index].children().length;
+        }
     }
 
     this.getDisplayType = function () {
@@ -94,30 +99,30 @@
     this.clear = function () {
         _Data = null;
         $.each(_UILists, function (index, item) { item.empty() });
-        $.each(_SelectedIndexes, function(index, item) { item = -1 });
-        _ActiveListIndex = _Settings.defaultList;
+        $.each(_SelectedIndexes, function (index, item) { item = -1 });
+        _ActiveListIndex = (_Settings.defaultListIndex > -1) ? _Settings.defaultListIndex : 0;
     }
 
     //Public - Creates list items by removing previous.
-    this.setData = function (data) {
+    this.setData = function (data, formatter) {
         this.clear();
         if (data && data.length === _UILists.length) {
             _Data = data;
-            initialRender(this);
+            initialRender(this, formatter);
             this.setSelected(_Settings.defaultIndex);
         }
     }
 
     //public - return selected data item.
     this.getSelected = function () {
-        if (_Data && _SelectedIndexes[_ActiveListIndex] > -1) {
+        if (_Data && _ActiveListIndex > -1 && _SelectedIndexes[_ActiveListIndex] > -1) {
             return _Data[_ActiveListIndex][_SelectedIndexes[_ActiveListIndex]];
         }
         return null;
     }
 
     //Public - sets selected list item.
-    this.setSelected = function (index, listIndex) {
+    this.setSelected = function (itemIndex, listIndex) {
         var $settings = _Settings;
 
         if (typeof listIndex != "number") {
@@ -125,7 +130,7 @@
         }
 
         if (listIndex > -1 && listIndex < _UILists.length) {
-            if (index > -1 && index < _UILists[listIndex].children().length) {
+            if (itemIndex > -1 && itemIndex < _UILists[listIndex].children().length) {
 
                 $.each(_UILists, function (j, $list) {
                     var $children = _UILists[j].children();
@@ -135,12 +140,12 @@
                             decorateItem($settings.lists[j].selectedItemClass, $(item), -1, i);
                         }
                         else {
-                            decorateItem($settings.lists[j].selectedItemClass, $(item), index, i);
+                            decorateItem($settings.lists[j].selectedItemClass, $(item), itemIndex, i);
                         }
                     });
 
                     _ActiveListIndex = listIndex;
-                    _SelectedIndexes[_ActiveListIndex] = index;
+                    _SelectedIndexes[_ActiveListIndex] = itemIndex;
 
                 });
 
@@ -182,15 +187,21 @@
     //Private Static - creates list items using data property
     // To use complete data item structure such as { name: "anyname", data: "anyhash" } change this method.
     // To use elements other than list change this method.
-    var initialRender = function ($this) {
+    var initialRender = function ($this, formatter) {
         var $settings = $this.getSettings();
 
         $.each($settings.lists, function (j, listInfo) {
             var $list = $this.getUILists()[j];
-	    var data = $this.getData();
+            var data = $this.getData();
             if (data) {
                 $.each(data[j], function (i, dataItem) {
-                    var $listItem = $($settings.itemTemplate).attr('data-' + $settings.itemdataattribute, i).addClass(listInfo.itemClass).append(dataItem);
+                    var $listItem = $($settings.itemTemplate).attr('data-' + $settings.itemdataattribute, i).addClass(listInfo.itemClass);
+                    if (formatter) {
+                        $listItem.append(formatter(dataItem));
+                    }
+                    else {
+                        $listItem.text(dataItem);
+                    }
                     decorateItem(listInfo.selectedItemClass, $listItem, -1, i);
                     $list.append($listItem).addClass(listInfo.listClass);
                 });

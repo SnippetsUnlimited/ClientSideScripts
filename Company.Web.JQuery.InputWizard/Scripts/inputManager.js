@@ -1,4 +1,11 @@
-﻿; function inputManager(target, options) {
+﻿//*********************************************************************************************
+// This code cannot be used without explicit permission.
+// Illegal use of this code may result in penal penalties.
+// For permissions and licencing please contact:
+// contib2012[ignore][at][ignore]gmail[ignore][dot][ignore]com[ignore]
+//*********************************************************************************************
+
+; function inputManager(target, options) {
 
     "use strict";
 
@@ -127,7 +134,7 @@
         }, styles);
 
         //create div as a copy and get cursor position.
-        var $div = $("<div></div>").css(css).append(preText).appendTo(document.body);
+        var $div = $("<div></div>").css(css).text(preText).appendTo(document.body);
         var $cursor = $("<span style='display:inline-block;'>.</span>").appendTo($div);
         var pos = $cursor.position();
         if ($this.css("direction") === "rtl") {

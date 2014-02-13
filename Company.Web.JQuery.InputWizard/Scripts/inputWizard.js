@@ -1,4 +1,11 @@
-﻿(function ($) {
+﻿//*********************************************************************************************
+// This code cannot be used without explicit permission.
+// Illegal use of this code may result in penal penalties.
+// For permissions and licencing please contact:
+// contib2012[ignore][at][ignore]gmail[ignore][dot][ignore]com[ignore]
+//*********************************************************************************************
+
+; (function ($) {
 
     "use strict";
 
@@ -37,9 +44,10 @@
             popupClass: "selectorlist",
             popupItemClass: "selectorlist-item",
             selectedpopupItemClass: "selectorlist-selecteditem",
+            popupOffset: { top: 0, left: 0 },
             inputManagerClass: "inputmanager-main",
             fullTextMatching: true,
-            selectOnSpacebar: true,
+            selectOnSpacebar: false,
             triggers: null,
             events: {
                 onDataLoad: null
@@ -63,7 +71,7 @@
         var _OptionSelector = new optionSelector({
             listClass: _Settings.popupClass,
             itemClass: _Settings.popupItemClass,
-            selectedItemClass: _Settings.selectedpopupItemClass,
+            selectedItemClass: _Settings.popupSelectedItemClass,
             events: {
                 onClicked: function (e) {
                     $element.focus();
@@ -110,8 +118,8 @@
                             }
                         }
 
-                        // dataset represents a set trigger, term and results.
-                        var dataset = null;
+                        // searchInfo represents a set trigger, term and results.
+                        var searchInfo = null;
 
                         // check which trigger triggers search in order.
                         $.each(_Settings.triggers, function (key, trigger) {
@@ -159,30 +167,39 @@
                                 }
 
                                 searchCache.setSearchCache(term, [trigger, result]);
-                                dataset = [trigger, term, result];
+                                searchInfo = [trigger, term, result];
                                 return;
                             }
                         });
 
                         // decide whether the popup should finally be displayed or not.
-                        var display = (function (ds) {
-                            var data = ds ? ds[2] : null;
+                        var display = (function (info) {
+                            var data = info ? info[2] : null;
                             if (data && data.length > 0) {
                                 var showList = true;
                                 if (_Settings.events.onDataLoad) {
                                     showList = _Settings.events.onDataLoad.call(this, data);
                                 }
-                                $selector.tag = { preText: e.preText, postText: e.postText, data: ds };
-                                $selector.setData(data);
+                                $selector.tag = { preText: e.preText, postText: e.postText, data: info };
+                                $selector.setData(data, info[0].formatter);
                                 return showList;
                             }
                             $selector.tag = null;
                             return false;
-                        })(dataset);
+                        })(searchInfo);
 
                         // make display popup only if not visible already and hide if displaed already
                         if (display && !$selector.getVisibility()) {
-                            $selector.setPosition(e.cursorPosition);
+                            var position = e.cursorPosition;
+                            position.top += _Settings.popupOffset.top;
+                            if (position.left) {
+                                position.left += _Settings.popupOffset.left;
+                            }
+                            else {
+                                position.right -= _Settings.popupOffset.left;
+                            }
+                            //more screen bounding checks can be added here.
+                            $selector.setPosition(position);
                             $selector.setVisible(true);
                         }
                         else if (!display && $selector.getVisibility()) {
@@ -232,7 +249,7 @@
             var box = $box.get(0);
             var tag = optionSelector.tag;
             var trigger = tag.data[0];
-            var replacement = trigger.replace(optionSelector.getSelected());
+            var replacement = trigger.replace(optionSelector.getSelected(), tag.data[1]);
             var newpreText = null;
             var newpostText = null;
 

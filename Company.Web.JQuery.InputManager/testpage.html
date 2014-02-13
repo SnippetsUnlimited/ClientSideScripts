@@ -5,51 +5,45 @@
     <script type="text/javascript" src="scripts/jquery-1.8.2.min.js"></script>
     <script type="text/javascript" src="scripts/inputManager.js"></script>
     <style>
-
     </style>
 </head>
 <body>
     <div id="pos1" style="position: absolute;">^</div>
     <div id="pos2" style="position: absolute;">^</div>
-    <span id="spanx"></span>
     <br />
     <br />
     <br />
     <br />
 
-    <textarea id="text1" style="direction:ltr;"></textarea>
+    <textarea id="text1" style="direction: ltr;"></textarea>
     <p />
-    <textarea id="text2" style="direction:rtl;"></textarea>
+    <textarea id="text2" style="direction: rtl;"></textarea>
     <p />
-    <div id="text3" contenteditable="true" tabindex="0" style="width:200px; height: 200px; border:1px solid #eeeeee;">
-
-    </div>
 </body>
-        <script type="text/javascript">
-            $(document).ready(function () {
+<script type="text/javascript">
+    $(document).ready(function () {
 
-                var i1 = new inputManager($("#text1"), {
-                    events: {
-                        onKeyup: function (e) {
-                            var pos = e.cursorPosition;
-                            $("#pos1").css("top", pos.top);
-                            $("#pos1").css("left", pos.left);
-                        },
-                        onKeydown: function (e) {
-                            console.log(e);
-                        }
-                    }
-                });
+        var i1 = new inputManager($("#text1"), {
+            events: {
+                onKeyup: function (e) {
+                    var pos = e.cursorPosition;
+                    $("#pos1").css("top", pos.top);
+                    $("#pos1").css("left", pos.left);
+                },
+                onKeydown: function (e) {
+                }
+            }
+        });
 
-                var i2 = new inputManager($("#text2"), {
-                    events: {
-                        onKeyup: function (e) {
-                            var pos = e.cursorPosition;
-                            $("#pos2").css("top", pos.top);
-                            $("#pos2").css("right", pos.right);
-                        }
-                    }
-                });
-            });
-    </script>
+        var i2 = new inputManager($("#text2"), {
+            events: {
+                onKeyup: function (e) {
+                    var pos = e.cursorPosition;
+                    $("#pos2").css("top", pos.top);
+                    $("#pos2").css("right", pos.right);
+                }
+            }
+        });
+    });
+</script>
 </html>

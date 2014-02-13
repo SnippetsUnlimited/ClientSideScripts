@@ -6,8 +6,7 @@
     <script type="text/javascript" src="scripts/optionSelector.js"></script>
     <style>
         /* for default class */
-        .selectorlist-item
-        {
+        .selectorlist-item {
             cursor: pointer;
             font-family: Verdana;
             font-size: 12px;
@@ -33,8 +32,7 @@
         }
 
         /* for default class */
-        .selectorlist
-        {
+        .selectorlist {
             position: absolute;
             width: 100px;
             border: 1px solid #aaaaaa;
@@ -43,71 +41,80 @@
 </head>
 <body>
 
-    <div id="div1" style="display: inline-block; position: relative;"><textarea id="text1" style="direction:ltr;"></textarea></div>
-    <br /><br /><br /><br /><br />
-    <div id="div2" style="display: inline-block; position: relative;"><textarea id="text2" style="direction: rtl;"></textarea></div>
+    <div id="div1" style="display: inline-block; position: relative;">
+        <textarea id="text1" style="direction: ltr;"></textarea>
+    </div>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <div id="div2" style="display: inline-block; position: relative;">
+        <textarea id="text2" style="direction: rtl;"></textarea>
+    </div>
 
 </body>
-        <script type="text/javascript">
-            $(document).ready(function () {
+<script type="text/javascript">
+    $(document).ready(function () {
 
-                var s1 = new optionSelector({
-                    events: {
-                        onClicked: function (e) {
-                            $("#text1").val(this.getSelected()).focus();
-                        }
-                    }
-                });
+        var s1 = new optionSelector({
+            events: {
+                onClicked: function (e) {
+                    $("#text1").val(this.getSelected()).focus();
+                }
+            }
+        });
 
-                $("#div1").append(s1.getUIRoot());
+        $("#div1").append(s1.getUIRoot());
 
-                $("#text1").on("keydown", function (e) {
-                    if (e.keyCode == 38) {
-                        e.preventDefault();
-                        s1.setSelected(s1.getSelectedIndex() - 1);
-                    }
-                    else if (e.keyCode == 40) {
-                        e.preventDefault();
-                        s1.setSelected(s1.getSelectedIndex() + 1);
-                    }
-                    else if (e.keyCode == 13) {
-                        e.preventDefault();
-                        $("#text1").val(s1.getSelected())
-                    }
-                });
+        $("#text1").on("keydown", function (e) {
+            if (e.keyCode == 38) {
+                e.preventDefault();
+                s1.setSelected(s1.getSelectedIndex() - 1);
+            }
+            else if (e.keyCode == 40) {
+                e.preventDefault();
+                s1.setSelected(s1.getSelectedIndex() + 1);
+            }
+            else if (e.keyCode == 13) {
+                e.preventDefault();
+                $("#text1").val(s1.getSelected())
+            }
+        });
 
-                s1.setData(['Apple', 'Ball', 'Camel', 'Duck', 'Elephant']);
+        s1.setData(['Apple', 'Ball', 'Camel', 'Duck', 'Elephant']);
 
-                //-----------------------------
+        $("#text1").focus();
+        //-----------------------------
 
-                var s2 = new optionSelector({
-                    itemClass: "selectorlist-item-rtl",
-                    events: {
-                        onClicked: function (e) {
-                            $("#text2").val(this.getSelected()).focus();
-                        }
-                    }
-                });
+        var s2 = new optionSelector({
+            itemClass: "selectorlist-item-rtl",
+            events: {
+                onClicked: function (e) {
+                    $("#text2").val(this.getSelected()).focus();
+                }
+            }
+        });
 
-                $("#div2").append(s2.getUIRoot());
+        $("#div2").append(s2.getUIRoot());
 
-                $("#text2").on("keydown", function (e) {
-                    if (e.keyCode == 38) {
-                        e.preventDefault();
-                        s2.setSelected(s2.getSelectedIndex() - 1);
-                    }
-                    else if (e.keyCode == 40) {
-                        e.preventDefault();
-                        s2.setSelected(s2.getSelectedIndex() + 1);
-                    }
-                    else if (e.keyCode == 13) {
-                        e.preventDefault();
-                        $("#text2").val(s2.getSelected())
-                    }
-                });
+        $("#text2").on("keydown", function (e) {
+            if (e.keyCode == 38) {
+                e.preventDefault();
+                s2.setSelected(s2.getSelectedIndex() - 1);
+            }
+            else if (e.keyCode == 40) {
+                e.preventDefault();
+                s2.setSelected(s2.getSelectedIndex() + 1);
+            }
+            else if (e.keyCode == 13) {
+                e.preventDefault();
+                $("#text2").val(s2.getSelected())
+            }
+        });
 
-                s2.setData(['سیب', 'گیند', 'اونٹ', 'بطخ', 'ہاتھی']);
+        s2.setData(['سیب', 'گیند', 'اونٹ', 'بطخ', 'ہاتھی']);
 
-            });
-    </script>
+    });
+</script>
 </html>

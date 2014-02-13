@@ -1,4 +1,12 @@
-﻿// This code is provided in raw form.
+﻿//*********************************************************************************************
+// This code cannot be used without explicit permission.
+// Illegal use of this code may result in penal penalties.
+// For permissions and licencing please contact:
+// contib2012[ignore][at][ignore]gmail[ignore][dot][ignore]com[ignore]
+//*********************************************************************************************
+
+
+// This code is provided in raw form.
 // It should be modified according to javascript specification at any time.
 ; function optionSelector(options) {
 
@@ -44,6 +52,10 @@
         return _SelectedIndex;
     }
 
+    this.getItemCount = function (index) {
+        return _UIRoot.children().length;
+    }
+
     this.getDisplayType = function () {
         return _DisplayType;
     }
@@ -60,11 +72,11 @@
     }
 
     //Public - Creates list items by removing previous.
-    this.setData = function (data) {
+    this.setData = function (data, formatter) {
         this.clear();
         if (data && data.length > 0) {
             _Data = data;
-            initialRender(this);
+            initialRender(this, formatter);
             this.setSelected(_Settings.defaultIndex);
         }
     }
@@ -124,16 +136,22 @@
     //Private Static - creates list items using data property
     // To use complete data item structure such as { name: "anyname", data: "anyhash" } change this method.
     // To use elements other than list change this method.
-    var initialRender = function ($this) {
+    var initialRender = function ($this, formatter) {
         var $settings = $this.getSettings();
         var $root = $this.getUIRoot();
         var data = $this.getData();
         $root.empty();
         if (data) {
-            $.each(data, function (i, item) {
-                var listItem = $($settings.itemTemplate).attr('data-' + $settings.itemdataattribute, i).addClass($settings.itemClass).append(item);
-                decorateItem($settings.selectedItemClass, listItem, $this.getSelectedIndex(), i);
-                $root.append(listItem);
+            $.each(data, function (i, dataItem) {
+                var $listItem = $($settings.itemTemplate).attr('data-' + $settings.itemdataattribute, i).addClass($settings.itemClass);
+                if (formatter) {
+                    $listItem.append(formatter(dataItem));
+                }
+                else {
+                    $listItem.text(dataItem);
+                }
+                decorateItem($settings.selectedItemClass, $listItem, $this.getSelectedIndex(), i);
+                $root.append($listItem);
             });
         }
     }

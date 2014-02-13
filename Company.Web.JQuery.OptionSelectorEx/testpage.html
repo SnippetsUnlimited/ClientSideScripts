@@ -6,8 +6,7 @@
     <script type="text/javascript" src="scripts/optionSelectorEx.js"></script>
     <style>
         /* for default class */
-        .selectorlist-item
-        {
+        .selectorlist-item {
             cursor: pointer;
             font-family: Verdana;
             font-size: 12px;
@@ -17,8 +16,7 @@
         }
 
         /* for text2 */
-        .selectorlist-item-rtl
-        {
+        .selectorlist-item-rtl {
             direction: rtl;
             cursor: pointer;
             font-family: Verdana;
@@ -28,28 +26,24 @@
             background-color: #ffffff;
         }
 
-        .selectorlist-selecteditem
-        {
+        .selectorlist-selecteditem {
             background-image: linear-gradient(to bottom, #5588CC, #5577B3);
             color: #ffffff !important;
         }
 
         /* for default class */
-        .selectorlist
-        {
+        .selectorlist {
             border: 1px solid #aaaaaa;
             width: 100px;
         }
 
-        .mainselectorlist
-        {
+        .mainselectorlist {
             position: absolute;
             border: 1px solid #aaaaaa;
             white-space: nowrap;
         }
 
-        .mainselectorlist-item
-        {
+        .mainselectorlist-item {
             display: inline-block;
             vertical-align: top;
             padding: 1px;
@@ -79,9 +73,25 @@
     $(document).ready(function () {
 
         var s1 = new optionSelectorEx({
-            defaultList: 1,
-            assistiveNavigation: true,
-            rememberSelection: true,
+            lists: [
+                {
+                    listClass: "selectorlist",
+                    itemClass: "selectorlist-item",
+                    selectedItemClass: "selectorlist-selecteditem",
+                },
+                {
+                    listClass: "selectorlist",
+                    itemClass: "selectorlist-item",
+                    selectedItemClass: "selectorlist-selecteditem",
+                },
+                {
+                    listClass: "selectorlist",
+                    itemClass: "selectorlist-item",
+                    selectedItemClass: "selectorlist-selecteditem",
+                }
+            ],
+            defaultListIndex: 0,
+            defaultIndex: 0,
             events: {
                 onClicked: function (e) {
                     $("#text1").val(this.getSelected()).focus();
@@ -120,6 +130,7 @@
             ['H', 'I', 'J', 'K', 'L']
         ]);
 
+        $("#text1").focus();
 
     });
 </script>
