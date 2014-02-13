@@ -1,0 +1,165 @@
+﻿<html>
+<head>
+    <title></title>
+    <script type="text/javascript" src="scripts/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="scripts/optionSelectorEx.js"></script>
+    <script type="text/javascript" src="scripts/inputManager.js"></script>
+    <script type="text/javascript" src="scripts/inputWizardEx.js"></script>
+    <style>
+        /* for default class */
+        .selectorlist-item {
+            cursor: pointer;
+            font-family: 'Segoe UI';
+            font-size: 12px;
+            color: #222222;
+            padding: 3px 5px 3px 10px;
+            background-color: #ffffff;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        /* for text2 */
+        .selectorlist-item-rtl {
+            direction: rtl;
+            cursor: pointer;
+            font-family: 'Segoe UI';
+            font-size: 12px;
+            color: #222222;
+            padding: 2px 5px 2px 2px;
+            background-color: #ffffff;
+        }
+
+        .selectorlist-selecteditem {
+            background-image: linear-gradient(to bottom, #5588CC, #5577B3);
+            color: #ffffff !important;
+        }
+
+        /* for default class */
+        .selectorlist {
+            border: 1px solid #aaaaaa;
+            width: 100px;
+        }
+
+        .mainselectorlist {
+            position: absolute;
+            border: 0px solid #aaaaaa;
+            white-space: nowrap;
+            background-color: #eeeeee;
+        }
+
+        .mainselectorlist-item {
+            display: inline-block;
+            vertical-align: top;
+            padding: 1px;
+        }
+    </style>
+</head>
+<body>
+
+    <textarea class="textboxes" id="text1" style="direction: ltr; width: 400px; height: 200px;"></textarea>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <textarea class="textboxes" id="text2" style="direction: rtl; width: 400px; height: 200px;"></textarea>
+
+</body>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#text1").inputWizardEx({
+            popupSettings: {
+                lists: [
+                    {
+                        listClass: "selectorlist",
+                        itemClass: "selectorlist-item",
+                        selectedItemClass: "selectorlist-selecteditem",
+                    },
+                    {
+                        listClass: "selectorlist",
+                        itemClass: "selectorlist-item",
+                        selectedItemClass: "selectorlist-selecteditem",
+                    },
+                    {
+                        listClass: "selectorlist",
+                        itemClass: "selectorlist-item",
+                        selectedItemClass: "selectorlist-selecteditem",
+                    }
+                ],
+                defaultListIndex: 0,
+                defaultIndex: 0,
+                rootListClass: "mainselectorlist",
+                rootListItemClass: "mainselectorlist-item",
+            },
+            popupOffset: { top: 3, left: 0 },
+            fullTextMatching: true,
+            triggers: [
+                {
+                    name: "dictionary",
+                    match: /\w+$/,
+                    search: function (term) {
+                        var list2 = ['<value>'];
+                        var list1 = ['apple', 'ape', 'ball', 'bambie', 'camel', 'color', 'duck', 'elephant'];
+                        var list3 = ['span', 'div'];
+
+                        return [list1, list2, list3];
+
+                        //return $.map(list1, function (item) {
+                        //    return item.indexOf(term) === 0 ? item : null;
+                        //});
+                    },
+                    replace: function (replaceWith, term, listIndex) {
+                        if (listIndex == 0) {
+                            return replaceWith;
+                        }
+                        else if (listIndex == 1) {
+                            return term + ': ' + replaceWith + ', ';
+                        }
+                        return ['<' + replaceWith + '>' + term, '</' + replaceWith + '>']
+                    },
+                    formatter: function (value) {
+                        return $("<div></div>").text(value).html();
+                    }
+                }
+            ],
+            events: {
+                onDataLoad: function (data) {
+                    return true;
+                }
+            }
+        });
+
+        $("#text1").focus();
+
+        /*
+        $("#text2").inputWizardEx({
+            popupClass: "selectorlist",
+            popupItemClass: "selectorlist-item-rtl",
+            selectedpopupItemClass: "selectorlist-selecteditem",
+            fullTextMatching: false,
+            triggers: [
+                {
+                    name: "dictionary",
+                    match: /\S+$/,
+                    search: function (term) {
+                        var list = ['سیب', 'جانور', 'گیند', 'ایاز', 'اونٹ', 'رنگ', 'بطخ', 'ہاتھی'];
+                        return $.map(list, function (item) {
+                            return item.indexOf(term) === 0 ? item : null;
+                        });
+                    },
+                    replace: function (term) {
+                        return term;
+                    }
+                }
+            ],
+            events: {
+                onDataLoad: function (data) {
+                    return true;
+                }
+            },
+
+        });
+        */
+    });
+</script>
+</html>
