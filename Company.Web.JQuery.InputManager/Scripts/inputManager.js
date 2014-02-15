@@ -22,6 +22,7 @@
         divTemplate: "<div style='position: relative; display:inline-block;'></div>",
         events: {
             onKeyup: null,
+            beforeKeydown: null,
             onKeydown: null
         },
     }, options);
@@ -64,6 +65,12 @@
     }
 
     var onKeydown = function (e) {
+
+        if (_Settings.events.beforeKeydown) {
+            if (!_Settings.events.beforeKeydown.call(this, e)) {
+                return;
+            }
+        }
 
         if (_Settings.events.onKeydown) {
 
