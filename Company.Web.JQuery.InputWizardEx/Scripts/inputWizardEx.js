@@ -5,7 +5,7 @@
 // contib2012[ignore][at][ignore]gmail[ignore][dot][ignore]com[ignore]
 //*********************************************************************************************
 
-;(function ($) {
+; (function ($) {
 
     "use strict";
 
@@ -44,6 +44,7 @@
             popupSettings: [],
             popupOffset: { top: 0, left: 0 },
             inputManagerClass: "inputmanager-main",
+            inputControlClass: "inputcontrol-main",
             fullTextMatching: true,
             selectOnSpacebar: false,
             triggers: null,
@@ -80,6 +81,7 @@
         });
 
         // make option selector invisible initially.
+        $element.addClass(_Settings.inputControlClass);
         _OptionSelector.setVisible(false);
 
         // save types text to compare with new and detect the changes
@@ -206,7 +208,7 @@
                     }
                 },
                 onKeydown: function (e) {
-
+                    //http://www.cambiaresearch.com/articles/15/javascript-char-codes-key-codes
                     var keyCode = e.keyCode;
                     var $selector = _OptionSelector;
 
@@ -262,6 +264,20 @@
                             $selector.setVisible(false);
                         }
                     }
+                    else {
+                        if (keyCode == 8) { // bkspace
+                            //do nothing
+                        }
+                        else if (keyCode == 46) { // delete
+                            //do nothing
+                        }
+                        else if (keyCode == 32) { // space
+                            //e.preventDefault();
+                            //e.target.val(e.preText + '\ufeff' + e.postText);
+                            //movCursor(e.target, e.newpreText.length + 1);
+                            //do nothing
+                        }
+                    }
                 }
             }
         });
@@ -297,17 +313,19 @@
             }
 
             $box.val(newpreText + newpostText);
+            movCursor(box, newpreText.length);
+        }
 
+        var movCursor = function (box, location) {
             if (typeof box.selectionEnd === "number") {
-                box.selectionStart = box.selectionEnd = newpreText.length;
+                box.selectionStart = box.selectionEnd = location;
             }
             else if (box.createTextRange) {
                 var range = box.createTextRange();
-                range.move('character', newpreText.length);
+                range.move('character', location);
                 range.collapse(false);
                 range.select();
             }
-
         }
 
         // attached option selector to input manager.

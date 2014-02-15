@@ -44,8 +44,10 @@
             popupClass: "selectorlist",
             popupItemClass: "selectorlist-item",
             selectedpopupItemClass: "selectorlist-selecteditem",
+	    defaultIndex: -1,
             popupOffset: { top: 0, left: 0 },
             inputManagerClass: "inputmanager-main",
+            inputControlClass: "inputcontrol-main",
             fullTextMatching: true,
             selectOnSpacebar: false,
             triggers: null,
@@ -72,6 +74,7 @@
             listClass: _Settings.popupClass,
             itemClass: _Settings.popupItemClass,
             selectedItemClass: _Settings.popupSelectedItemClass,
+            defaultIndex: _Settings.defaultIndex,
             events: {
                 onClicked: function (e) {
                     $element.focus();
@@ -82,6 +85,7 @@
         });
 
         // make option selector invisible initially.
+        $element.addClass(_Settings.inputControlClass);
         _OptionSelector.setVisible(false);
 
         // save types text to compare with new and detect the changes
@@ -208,7 +212,7 @@
                     }
                 },
                 onKeydown: function (e) {
-
+                    //http://www.cambiaresearch.com/articles/15/javascript-char-codes-key-codes
                     var keyCode = e.keyCode;
                     var $selector = _OptionSelector;
 
@@ -275,17 +279,19 @@
             }
 
             $box.val(newpreText + newpostText);
+            movCursor(box, newpreText.length);
+        }
 
+        var movCursor = function (box, location) {
             if (typeof box.selectionEnd === "number") {
-                box.selectionStart = box.selectionEnd = newpreText.length;
+                box.selectionStart = box.selectionEnd = location;
             }
             else if (box.createTextRange) {
                 var range = box.createTextRange();
-                range.move('character', newpreText.length);
+                range.move('character', location);
                 range.collapse(false);
                 range.select();
             }
-
         }
 
         // attached option selector to input manager.
