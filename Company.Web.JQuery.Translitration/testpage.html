@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <script type="text/javascript" src="scripts/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="scripts/words.js"></script>
+    <script type="text/javascript" src="scripts/dictionary.js"></script>
+</head>
+<body>
+   <input id="text1" type="text" />
+    <ul id="ul1"></ul>
+</body>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        var dic = Dictionary.GetInstance();
+
+        $("#text1").on("keyup", function (e) {
+
+            var result = dic.GetEnglish2UrduFuzzyMatches($(this).val());
+
+            $("#ul1").empty();
+            $.each(result, function (index, item) {
+                $("#ul1").append($("<li></li>").text(item));
+            });
+
+        });
+
+        $("#text1").focus();
+
+
+    });
+</script>
+</html>
